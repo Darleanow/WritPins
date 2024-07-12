@@ -1,6 +1,14 @@
 import { Store as PullStateStore } from 'pullstate';
+import { PinList, lists } from '../mock/pin';
 
-import { lists, homeItems, notifications, settings, TodoListItem, HomeItem, NotificationItem, Settings } from '../mock';
+import {
+  homeItems,
+  notifications,
+  settings,
+  HomeItem,
+  NotificationItem,
+  Settings,
+} from '../mock';
 
 type StoreProps = {
   safeAreaTop: number;
@@ -9,11 +17,11 @@ type StoreProps = {
   notificationsOpen: boolean;
   currentPage: number | null;
   homeItems: HomeItem[];
-  lists: TodoListItem[];
+  lists: PinList[];
   notifications: NotificationItem[];
   settings: Settings;
-  selectedList: TodoListItem | undefined;
-}
+  selectedList: PinList | undefined;
+};
 
 const Store = new PullStateStore<StoreProps>({
   safeAreaTop: 0,

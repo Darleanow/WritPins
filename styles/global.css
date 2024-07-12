@@ -10,6 +10,21 @@ body {
   width: 100vw;
 }
 
+/*
+  * Remove Scrollbars
+  */
+html,
+body {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
 /**
  * Styles for the Icon UI component.
  *

@@ -1,4 +1,4 @@
-import { TodoListItem } from '../../mock';
+import { PinList } from '../../mock/pin';
 import Store from '../../store';
 import * as selectors from '../../store/selectors';
 import {
@@ -12,7 +12,8 @@ import {
   IonList,
 } from '@ionic/react';
 
-const ListEntry = ({ list }: { list: TodoListItem }) => {
+const ListEntry = ({ list }: { list: PinList }) => {
+  console.log("here: ", list.name)
   return (
     <IonItem routerLink={`/lists/${list.id}`} className="list-entry">
       <IonLabel>{list.name}</IonLabel>
@@ -20,9 +21,9 @@ const ListEntry = ({ list }: { list: TodoListItem }) => {
   );
 };
 
-const AllLists = () => {
+const AllPins = () => {
   const lists = Store.useState(selectors.selectLists);
-
+  console.log(lists)
   return (
     <>
       {lists.map((list, i) => (
@@ -37,17 +38,17 @@ const Lists = () => {
     <IonPage>
       <IonHeader translucent={true}>
         <IonToolbar>
-          <IonTitle>Lists</IonTitle>
+          <IonTitle>My Pins</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen={true}>
+      <IonContent className="ion-padding" fullscreen={true} >
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Lists</IonTitle>
+            <IonTitle size="large">My Pins</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonList>
-          <AllLists />
+          <AllPins />
         </IonList>
       </IonContent>
     </IonPage>

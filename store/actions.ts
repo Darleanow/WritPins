@@ -1,5 +1,6 @@
 import Store from '.';
-import { ListItem, Settings, TodoListItem } from '../mock';
+import { Settings } from '../mock';
+import {Pin, PinList } from '../mock/pin';
 
 export const setMenuOpen = (open: boolean) => {
   Store.update(s => {
@@ -22,17 +23,16 @@ export const setSettings = (settings: Settings) => {
 // App-specific actions
 
 export const setDone = (
-  list: TodoListItem,
-  listItem: ListItem,
+  list: PinList,
+  listItem: Pin,
   done: boolean,
 ) => {
   Store.update((s, o) => {
     const listIndex = o.lists.findIndex(l => l === list);
-    const items = o.lists[listIndex].items;
+    const items = o.lists[listIndex].pin;
     const itemIndex = items?.findIndex(i => i === listItem);
     const item = items?.[itemIndex ?? -1];
     if (!item) return;
-    item.done = done;
     if (list === o.selectedList) {
       s.selectedList = s.lists[listIndex];
     }
