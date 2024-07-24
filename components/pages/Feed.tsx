@@ -1,3 +1,4 @@
+// pages/Feed.tsx
 import Image from 'next/image';
 import Card from '../ui/Card';
 
@@ -17,6 +18,7 @@ import { useState } from 'react';
 import { notificationsOutline } from 'ionicons/icons';
 import { selectHomeItems } from '../../store/selectors';
 import Store from '../../store';
+import { useAuth } from '../../app/contexts/authContext';
 
 type FeedCardProps = {
   title: string;
@@ -74,12 +76,13 @@ const FeedCard = ({
 const Feed = () => {
   const homeItems = Store.useState(selectHomeItems);
   const [showNotifications, setShowNotifications] = useState(false);
+  const { fullName } = useAuth();
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Feed</IonTitle>
+          <IonTitle>Welcome back, {fullName}</IonTitle>
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
@@ -93,7 +96,7 @@ const Feed = () => {
       <IonContent className="ion-padding" fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">My Feed</IonTitle>
+            <IonTitle size="large">Writ&apos;Pins</IonTitle>
           </IonToolbar>
         </IonHeader>
         <Notifications

@@ -13,11 +13,8 @@ import {
 } from '@ionic/react';
 
 const ListEntry = ({ list }: { list: PinList }) => {
-  console.log("here: ", list.name)
   return (
-    <IonItem routerLink={`/lists/${list.id}`} className="list-entry">
       <IonLabel>{list.name}</IonLabel>
-    </IonItem>
   );
 };
 
