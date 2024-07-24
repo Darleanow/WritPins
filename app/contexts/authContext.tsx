@@ -19,16 +19,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
-            if (currentUser?.displayName) {
-                const [extractedFullName] = currentUser.displayName.split('|');
-                setFullName(extractedFullName);
-            } else {
-                setFullName(null);
-            }
+            setFullName(currentUser?.displayName || null);
             setLoading(false);
         });
 
-        return () => unsubscribe();
+        return unsubscribe;
     }, []);
 
     return (
