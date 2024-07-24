@@ -1,9 +1,45 @@
-// pages/Login.tsx
 import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+    IonContent,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButton,
+    IonInput,
+    IonItem,
+    IonLabel,
+    IonPage,
+    IonText,
+} from '@ionic/react';
 import { auth } from "../../app/firebaseConfig";
-import { IonContent, IonHeader, IonItem, IonInput, IonButton, IonLabel, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+
+const getFriendlyErrorMessage = (error: any): string => {
+    if (error.code) {
+        switch (error.code) {
+            case 'auth/invalid-credential':
+                return 'Invalid login credentials. Please check your email and password.';
+            case 'auth/email-already-in-use':
+                return 'The email address is already in use by another account.';
+            case 'auth/invalid-email':
+                return 'The email address is badly formatted.';
+            case 'auth/user-disabled':
+                return 'This user account has been disabled.';
+            case 'auth/user-not-found':
+                return 'No user found with this email.';
+            case 'auth/wrong-password':
+                return 'Incorrect password. Please try again.';
+            case 'auth/too-many-requests':
+                return 'Too many unsuccessful login attempts. Please try again later.';
+            case 'auth/weak-password':
+                return 'The password is too weak. Please choose a stronger password.';
+            default:
+                return 'An error occurred. Please try again.';
+        }
+    }
+    return 'An error occurred. Please try again.';
+};
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -17,7 +53,7 @@ const Login = () => {
             await signInWithEmailAndPassword(auth, email, password);
             history.push('/feed'); // Redirect to feed after successful login
         } catch (err) {
-            setError((err as Error).message);
+            setError(getFriendlyErrorMessage(err));
         }
     };
 
@@ -32,7 +68,11 @@ const Login = () => {
                 <IonTitle size="large" className="ion-text-center">
                     Welcome Back!
                 </IonTitle>
-                {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+                {error && (
+                    <IonText color="danger" style={{ textAlign: 'center' }}>
+                        <p>{error}</p>
+                    </IonText>
+                )}
                 <form onSubmit={handleLogin} style={{ marginTop: '20px' }}>
                     <IonItem>
                         <IonLabel position="floating">Email</IonLabel>

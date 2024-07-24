@@ -3,7 +3,38 @@ import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from "../../app/firebaseConfig";
-import { IonHeader, IonPage, IonTitle, IonToolbar, IonContent, IonItem, IonLabel, IonButton, IonInput } from '@ionic/react';
+import {
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    IonContent,
+    IonItem,
+    IonLabel,
+    IonButton,
+    IonInput,
+    IonText
+} from '@ionic/react';
+
+const getFriendlyErrorMessage = (error: any): string => {
+    if (error.code) {
+        switch (error.code) {
+            case 'auth/email-already-in-use':
+                return 'The email address is already in use by another account.';
+            case 'auth/invalid-email':
+                return 'The email address is badly formatted.';
+            case 'auth/weak-password':
+                return 'The password is too weak. Please choose a stronger password.';
+            case 'auth/operation-not-allowed':
+                return 'Email/password accounts are not enabled. Enable email/password accounts in the Firebase Console, under the Auth tab.';
+            case 'auth/internal-error':
+                return 'An internal error has occurred. Please try again.';
+            default:
+                return 'An error occurred. Please try again.';
+        }
+    }
+    return 'An error occurred. Please try again.';
+};
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -12,20 +43,37 @@ const Register = () => {
     const [error, setError] = useState('');
     const history = useHistory();
 
+    const validatePassword = (password: string) => {
+        const minLength = 8;
+        return password.length >= minLength;
+    };
+
+    const validateFullName = (name: string) => {
+        return name.trim().length > 0;
+    };
+
     const handleRegister = async (e: FormEvent) => {
         e.preventDefault();
+        if (!validateFullName(fullName)) {
+            setError('Full name is required.');
+            return;
+        }
+        if (!validatePassword(password)) {
+            setError('Password should be at least 8 characters.');
+            return;
+        }
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // Update the user profile with full name and username
+            // Update the user profile with full name
             await updateProfile(user, {
-                displayName: `${fullName}`, // Storing fullName and username in displayName
+                displayName: `${fullName}`, // Storing fullName
             });
 
             history.push('/feed'); // Redirect to feed after successful registration
         } catch (err) {
-            setError((err as Error).message);
+            setError(getFriendlyErrorMessage(err));
         }
     };
 
@@ -38,9 +86,13 @@ const Register = () => {
             </IonHeader>
             <IonContent className="ion-padding">
                 <IonTitle size="large" className="ion-text-center">
-                    Ready to join us ?
+                    Ready to join us?
                 </IonTitle>
-                {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+                {error && (
+                    <IonText color="danger" style={{ textAlign: 'center' }}>
+                        <p>{error}</p>
+                    </IonText>
+                )}
                 <form onSubmit={handleRegister} style={{ marginTop: '20px' }}>
                     <IonItem>
                         <IonLabel position="floating">Full Name</IonLabel>
@@ -70,7 +122,7 @@ const Register = () => {
                         />
                     </IonItem>
                     <IonButton expand="block" type="submit" style={{ marginTop: '20px' }}>
-                        Login
+                        Register
                     </IonButton>
                 </form>
                 <div style={{ textAlign: 'center', marginTop: '20px' }}>
