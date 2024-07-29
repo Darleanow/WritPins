@@ -59,22 +59,19 @@ const Login = () => {
 
     return (
         <IonPage>
-            <IonHeader>
+            <IonHeader mode="ios">
                 <IonToolbar>
-                    <IonTitle>Login</IonTitle>
+                    <IonTitle>Welcome Back!</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
-                <IonTitle size="large" className="ion-text-center">
-                    Welcome Back!
-                </IonTitle>
                 {error && (
                     <IonText color="danger" style={{ textAlign: 'center' }}>
                         <p>{error}</p>
                     </IonText>
                 )}
                 <form onSubmit={handleLogin} style={{ marginTop: '20px' }}>
-                    <IonItem>
+                    <IonItem lines="full" mode="ios">
                         <IonLabel position="floating">Email</IonLabel>
                         <IonInput
                             type="email"
@@ -83,7 +80,7 @@ const Login = () => {
                             required
                         />
                     </IonItem>
-                    <IonItem>
+                    <IonItem lines="full" mode="ios">
                         <IonLabel position="floating">Password</IonLabel>
                         <IonInput
                             type="password"

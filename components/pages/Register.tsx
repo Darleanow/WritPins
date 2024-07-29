@@ -36,7 +36,7 @@ const getFriendlyErrorMessage = (error: any): string => {
     return 'An error occurred. Please try again.';
 };
 
-const Register = () => {
+const Register: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
@@ -81,13 +81,11 @@ const Register = () => {
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Register</IonTitle>
+                    <IonTitle>Ready to Join us ?</IonTitle>
                 </IonToolbar>
             </IonHeader>
+
             <IonContent className="ion-padding">
-                <IonTitle size="large" className="ion-text-center">
-                    Ready to join us?
-                </IonTitle>
                 {error && (
                     <IonText color="danger" style={{ textAlign: 'center' }}>
                         <p>{error}</p>
