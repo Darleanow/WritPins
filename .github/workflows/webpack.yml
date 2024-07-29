@@ -1,0 +1,48 @@
+name: NodeJS with Next.js and Ionic
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Lint code
+      run: npm run lint
+
+    - name: Build project
+      run: npm run build
+
+    - name: Run tests
+      run: npm test
+
+    - name: Sync Capacitor plugins
+      run: npm run sync
+
+    - name: Build Android
+      if: github.event_name == 'push'
+      run: npm run android
+
+    - name: Build iOS
+      if: github.event_name == 'push' && github.actor == 'Darleanow'
+      run: npm run ios
