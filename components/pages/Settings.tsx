@@ -1,38 +1,41 @@
+import React, { useState } from 'react';
 import {
   IonPage,
   IonHeader,
-  IonItem,
   IonToolbar,
   IonTitle,
   IonContent,
-  IonList,
-  IonToggle,
   IonButton,
   IonToast,
   IonAlert,
 } from '@ionic/react';
-import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../app/firebaseConfig';
 
-import Store from '../../store';
-import * as selectors from '../../store/selectors';
-import { setSettings } from '../../store/actions';
-
-const Settings = () => {
-  const settings = Store.useState(selectors.selectSettings);
+/**
+ * Settings component to manage user account settings, including the logout functionality.
+ * Provides options to the user for account management and application settings.
+ */
+const Settings: React.FC = () => {
   const history = useHistory();
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [showAlert, setShowAlert] = useState(false);
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>('');
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
+  /**
+   * Logs out the user by calling Firebase's `signOut` method. 
+   * Displays a success or error message and redirects to the login page on success.
+   * 
+   * @async
+   * @function
+   */
   const handleLogout = async () => {
     try {
       await signOut(auth);
       setToastMessage('Successfully logged out.');
       setShowToast(true);
-      history.push('/login');
+      history.push('/login'); // Redirect to the login page after a successful logout
     } catch (error) {
       console.error('Error logging out: ', error);
       setToastMessage('Error logging out. Please try again.');
@@ -40,48 +43,36 @@ const Settings = () => {
     }
   };
 
-  const handleToggleNotifications = (e: any) => {
-    const updatedSettings = { ...settings, enableNotifications: e.detail.checked };
-    setSettings(updatedSettings);
-    setToastMessage(`Notifications ${e.detail.checked ? 'enabled' : 'disabled'}.`);
-    setShowToast(true);
-  };
-
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle className="ion-text-center">Settings</IonTitle>
+          <IonTitle>Settings</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
-        <IonList className="ion-margin-top">
-          <IonItem>
-            <IonToggle
-              checked={settings.enableNotifications}
-              onIonChange={handleToggleNotifications}
-            >Enable Notifications</IonToggle>
-          </IonItem>
-          <IonItem className="ion-justify-content-center">
-            <div style={{ textAlign: 'center', justifyContent: 'center', alignItems: 'center', width: '100%', margin: '5%' }}>
-              <IonButton
-                fill="outline"
-                size='default'
-                style={{ width: '100%' }}
-                onClick={() => setShowAlert(true)}
-              >
-                Logout
-              </IonButton>
-            </div>
-          </IonItem>
-        </IonList>
+      <IonContent className="ion-padding text-gray-100">
+        <div className="flex justify-center mt-8">
+          <IonButton
+            expand="block"
+            fill="outline"
+            color="danger"
+            onClick={() => setShowAlert(true)}
+            className="w-full max-w-xs"
+          >
+            Logout
+          </IonButton>
+        </div>
+
+        {/* Toast notification to display logout status */}
         <IonToast
           isOpen={showToast}
           message={toastMessage}
           duration={2000}
-          position="top" // Set position to top
+          position="top"
           onDidDismiss={() => setShowToast(false)}
         />
+
+        {/* Alert dialog for confirming logout action */}
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
@@ -91,7 +82,6 @@ const Settings = () => {
             {
               text: 'Cancel',
               role: 'cancel',
-              cssClass: 'secondary',
               handler: () => setShowAlert(false),
             },
             {

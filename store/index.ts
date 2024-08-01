@@ -1,14 +1,6 @@
+// store/Store.ts
 import { Store as PullStateStore } from 'pullstate';
-import { PinList, lists } from '../mock/pin';
-
-import {
-  homeItems,
-  notifications,
-  settings,
-  HomeItem,
-  NotificationItem,
-  Settings,
-} from '../mock';
+import { Pin } from '../mock/pin';
 
 type StoreProps = {
   safeAreaTop: number;
@@ -16,11 +8,8 @@ type StoreProps = {
   menuOpen: boolean;
   notificationsOpen: boolean;
   currentPage: number | null;
-  homeItems: HomeItem[];
-  lists: PinList[];
-  notifications: NotificationItem[];
-  settings: Settings;
-  selectedList: PinList | undefined;
+  pins: Pin[];
+  selectedList: Pin[] | undefined;
 };
 
 const Store = new PullStateStore<StoreProps>({
@@ -29,11 +18,8 @@ const Store = new PullStateStore<StoreProps>({
   menuOpen: false,
   notificationsOpen: false,
   currentPage: null,
-  homeItems,
-  lists,
-  notifications,
-  settings,
-  selectedList: undefined,
+  pins: [],
+  selectedList: [],
 });
 
 export default Store;

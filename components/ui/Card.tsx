@@ -1,17 +1,16 @@
-import classNames from 'classnames';
+import React, { ReactNode } from 'react';
 
-const Card = ({
-  children,
-  className,
-}: {
-  children: React.ReactElement[];
-  className: string;
-}) => (
-  <div className={classNames('max-w-xl', className)}>
-    <div className="bg-white shadow-md rounded-b-xl dark:bg-black">
-      {children}
-    </div>
+interface CardProps {
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
+
+const Card: React.FC<CardProps> = ({ children, className, onClick }) => (
+  <div className={`card ${className}`} onClick={onClick}>
+    {children}
   </div>
 );
 
 export default Card;
+
