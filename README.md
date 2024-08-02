@@ -1,5 +1,7 @@
 # WritPins
 
+![Screenshot](./screenshot.png)
+
 WritPins is a collaborative platform for writers and creatives, offering a space to share, discover, and engage with creative pins. Each pin represents a unique piece of content, such as a story, article, or creative idea. Users can create, view, and manage their pins while exploring content from others.
 
 The project has been made using Next.js, Tailwind, and Firebase (Auth&Storage).
