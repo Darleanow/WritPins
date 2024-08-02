@@ -31,7 +31,7 @@ const Tabs = () => {
         </IonTabButton>
         <IonTabButton tab="tab2" href="/lists" className="flex flex-col items-center">
           <IonIcon icon={list} className="text-xl text-gray-600 dark:text-gray-400" />
-          <IonLabel className="text-xs text-gray-600 dark:text-gray-400">Lists</IonLabel>
+          <IonLabel className="text-xs text-gray-600 dark:text-gray-400">My Pins</IonLabel>
         </IonTabButton>
         <IonTabButton tab="tab3" href="/settings" className="flex flex-col items-center">
           <IonIcon icon={cog} className="text-xl text-gray-600 dark:text-gray-400" />
