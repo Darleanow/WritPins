@@ -49,6 +49,7 @@ const Lists: React.FC = () => {
         const querySnapshot = await getDocs(collection(db, 'pins'));
         const userPins = querySnapshot.docs
           .map((doc) => ({
+            id: doc.id, // Assign the document ID
             ...doc.data(),
             creation_date: doc.data().creation_date?.toDate(),
           } as Pin)) // Type assertion for the pin data
@@ -98,6 +99,7 @@ const Lists: React.FC = () => {
     const querySnapshot = await getDocs(collection(db, 'pins'));
     const updatedPins = querySnapshot.docs
       .map((doc) => ({
+        id: doc.id, // Assign the document ID
         ...doc.data(),
         creation_date: doc.data().creation_date?.toDate(),
       } as Pin)) // Type assertion for the pin data
@@ -129,7 +131,7 @@ const Lists: React.FC = () => {
   const deletePin = async () => {
     if (selectedPin) {
       try {
-        await deleteDoc(doc(db, 'pins', selectedPin.id));
+        await deleteDoc(doc(db, 'pins', selectedPin.id)); // Use the pin ID to delete the document
         setShowPinDetailsModal(false);
         fetchUserPins(); // Refresh pins after deletion
         setSelectedPin(null);
@@ -155,14 +157,12 @@ const Lists: React.FC = () => {
 
         {pins.length > 0 ? (
           pins.map((pin, index) => (
-            <div key={index} className="flex items-center justify-between my-2">
-              <div className="flex-grow">
-                <FeedCard pin={pin} onClick={() => openPinDetails(pin)} />
-              </div>
+            <div key={index} className="relative my-4">
+              <FeedCard pin={pin} onClick={() => openPinDetails(pin)} />
               <IonButton
                 fill="clear"
                 color="danger"
-                className="flex-shrink-0 ml-4"
+                className="absolute top-0 right-0 m-2"
                 onClick={(e) => {
                   e.stopPropagation();
                   setSelectedPin(pin);
@@ -181,7 +181,6 @@ const Lists: React.FC = () => {
             </p>
           </div>
         )}
-
 
         <IonFab vertical="bottom" horizontal="end" slot="fixed" className="mb-4 mr-4">
           <IonFabButton size="small" onClick={openCreatePinModal} className="w-12 h-12">
